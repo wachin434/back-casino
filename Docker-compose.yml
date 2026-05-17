@@ -1,0 +1,54 @@
+version: '3.8'
+
+networks:
+  casino-network:
+    driver: bridge
+
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: casino_db
+    networks:
+      - casino-network
+    environment:
+      POSTGRES_USER: vidal_admin
+      POSTGRES_PASSWORD: super_password_vidal
+      POSTGRES_DB: vidal_casino_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend  
+      dockerfile: Dockerfile
+    container_name: casino_backend
+    networks:
+      - casino-network
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_HOST=postgres-db
+      - DB_USER=vidal_admin
+      - DB_PASSWORD=super_password_vidal
+      - DB_NAME=vidal_casino_db
+      - JWT_SECRET=vidal_token_secreto_2026
+    depends_on:
+      - postgres-db
+
+  frontend:
+    build:
+      context: ./frontend 
+      dockerfile: Dockerfile
+    container_name: casino_frontend
+    networks:
+      - casino-network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
