@@ -3,7 +3,7 @@ name: Build & Deploy backend
 on:
   workflow_dispatch:           # permite lanzarlo manual desde la pestana Actions
   push:
-    branches: [ main ]
+    branches: [ deploy ]
     paths-ignore: [ 'db/**' ]   # cambios solo en db/ no disparan este job
 
 jobs:
