@@ -21,7 +21,7 @@ services:
 
   backend:
     build:
-      context: ./backend  
+      context: ./back-casino  
       dockerfile: Dockerfile
     container_name: casino_backend
     networks:
@@ -40,7 +40,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend 
+      context: ./front-casino 
       dockerfile: Dockerfile
     container_name: casino_frontend
     networks:
